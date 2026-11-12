@@ -369,6 +369,29 @@ main { padding-bottom: 120px; }
 .nf h1 { margin:0 0 8px; font-family:var(--font-display); font-size:28px; }
 .nf p { margin:0; color:var(--muted); }
 .nf-on .bar, .nf-on main, .nf-on footer, .nf-on .cartbar { display:none !important; }
+
+/* ===== Avalon motion + bigger banners ===== */
+.bn { flex:0 0 92%; max-width:520px; aspect-ratio:2/1; border-radius:22px; box-shadow:0 14px 28px -16px rgba(31,27,22,.5); }
+.bn div { padding:44px 18px 16px; background:linear-gradient(to top,rgba(0,0,0,.75),transparent); }
+.bn b { font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,.4); }
+.bn span { display:inline-block; margin-top:6px; padding:4px 11px; border-radius:99px; background:rgba(255,255,255,.22); font-weight:700; font-size:12.5px; }
+.bn:active { transform:scale(.985); }
+.dots { display:flex; justify-content:center; gap:6px; padding:12px 0 2px; }
+.dots i { width:6px; height:6px; border-radius:3px; background:#d9cbb8; transition:width .3s, background .3s; }
+.dots i.on { width:22px; background:var(--accent); }
+.banner { min-height:150px; padding:22px; flex-direction:column; align-items:flex-start; justify-content:flex-end; gap:10px; border-radius:22px; }
+.banner .bimg { opacity:1; }
+.banner::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.18) 75%); }
+.banner h2 { font-size:36px; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,.35); }
+.banner small { padding:5px 12px; border-radius:99px; background:rgba(255,255,255,.2); font-weight:700; font-size:12.5px; opacity:1; }
+.rv { opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease; transition-delay:var(--d,0ms); }
+.rv.in { opacity:1; transform:none; }
+.card.rv:nth-child(2n) { --d:70ms; }
+.card.rv.in:active { transform:scale(.97); transition-delay:0ms; transition-duration:.12s; }
+html.lite .rv { opacity:1; transform:none; transition:none; }
+.logo { animation:logopop .6s cubic-bezier(.3,1.5,.5,1) both; }
+@keyframes logopop { from { transform:scale(.5); opacity:0; } to { transform:none; opacity:1; } }
+.fly { position:fixed; z-index:95; left:0; top:0; width:20px; height:20px; margin:-10px 0 0 -10px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 6px 14px -4px var(--glow); pointer-events:none; }
 </style>
 </head>
 <body>
@@ -407,6 +430,7 @@ main { padding-bottom: 120px; }
 
 <main class="wrap">
   <div class="bns" id="bns" hidden></div>
+  <div class="dots" id="bdots" hidden></div>
   <div id="menu"></div>
   <div class="empty" id="noRes" hidden>Nothing matches that search. Try another word.</div>
 </main>
@@ -555,6 +579,52 @@ main { padding-bottom: 120px; }
       return '<button class="bn"' + (b.category ? ' data-tab="' + esc(slug(b.category)) + '"' : "") + '><img src="' + esc(b.image) + '" alt="" loading="lazy" onerror="this.remove()">' +
         (has ? "<div>" + (b.title ? "<b>" + esc(b.title) + "</b>" : "") + (sub ? "<span>" + esc(sub) + "</span>" : "") + "</div>" : "") + "</button>";
     }).join("");
+    setupBanners(list.length);
+  }
+  var bnTimer = 0, bnPause = 0;
+  function setupBanners(n) {
+    var el = $("#bns"), dots = $("#bdots");
+    clearInterval(bnTimer);
+    dots.hidden = n < 2;
+    dots.innerHTML = n > 1 ? new Array(n + 1).join("<i></i>") : "";
+    if (n < 2) return;
+    var cards = $$(".bn", el), cur = 0, raf = 0;
+    function mark(i) { cur = i; $$("i", dots).forEach(function (d, j) { d.classList.toggle("on", j === i); }); }
+    function idx() { var step = cards[1].offsetLeft - cards[0].offsetLeft; return Math.max(0, Math.min(n - 1, Math.round(el.scrollLeft / step))); }
+    mark(0);
+    el.onscroll = function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; var i = idx(); if (i !== cur) mark(i); }); };
+    el.onpointerdown = el.ontouchstart = el.onmouseenter = function () { bnPause = Date.now() + 8000; };
+    if (REDUCED) return;
+    bnTimer = setInterval(function () {
+      if (document.hidden || Date.now() < bnPause) return;
+      var i = (cur + 1) % n;
+      el.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: "smooth" });
+    }, 4500);
+  }
+  function reveal() {
+    var els = $$(".rv");
+    if (LITE || !("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+    var ro = new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); o.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (e) { ro.observe(e); });
+  }
+  function fly(from) {
+    if (LITE || !from || !from.animate) return;
+    var r = from.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight;
+    var sx = r.left + r.width / 2, sy = r.top + r.height / 2, tx, ty, bag = $("#cartbar .bag");
+    if ($("#cartbar").classList.contains("on") && bag && bag.offsetParent !== null) {
+      var b = bag.getBoundingClientRect(); tx = b.left + b.width / 2; ty = b.top + b.height / 2;
+    } else { tx = (vw - Math.min(vw - 32, 560)) / 2 + 45; ty = vh - 41; }
+    var d = document.createElement("div"); d.className = "fly"; d.style.left = sx + "px"; d.style.top = sy + "px";
+    document.body.appendChild(d);
+    var dx = tx - sx, dy = ty - sy;
+    var a = d.animate([
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: "translate(" + dx * 0.55 + "px," + (dy * 0.55 - 70) + "px) scale(.85)", opacity: 1, offset: 0.5 },
+      { transform: "translate(" + dx + "px," + dy + "px) scale(.35)", opacity: .35 }
+    ], { duration: 650, easing: "cubic-bezier(.3,.7,.4,1)" });
+    a.onfinish = a.oncancel = function () { d.remove(); };
   }
   function fetchMenu() {
     var ctl = typeof AbortController === "function" ? new AbortController() : null;
@@ -603,7 +673,7 @@ main { padding-bottom: 120px; }
     var disc = cheap && cheap.discountPct > 0 && cheap.originalPrice > cheap.price;
     var chip = disc ? cheap.discountPct + "% off" : it.badge;
     var priceHTML = off ? "Sold out" : (multi ? "<small>From</small>" : "") + fmt(it.from) + (disc ? '<span class="was">' + fmt(cheap.originalPrice) + "</span>" : "");
-    return '<article class="card' + (off ? " off" : "") + '" data-key="' + esc(c.id + "/" + it.id) + '" data-name="' + esc(it.name.toLowerCase()) + '" tabindex="0" role="button" aria-label="' + esc(it.name) + '">' +
+    return '<article class="card rv' + (off ? " off" : "") + '" data-key="' + esc(c.id + "/" + it.id) + '" data-name="' + esc(it.name.toLowerCase()) + '" tabindex="0" role="button" aria-label="' + esc(it.name) + '">' +
       '<div class="pic">' + picHTML(it.image, c.name, it.name) + (chip && !off ? '<span class="dchip">' + esc(chip) + "</span>" : "") +
       '<button class="add" data-add aria-label="' + (multi ? "Choose options for " : "Add ") + esc(it.name) + '"' + (off ? " disabled" : "") + '><svg class="ic"><use href="#i-plus"/></svg></button></div>' +
       '<h3 class="name">' + esc(it.name) + '</h3><div class="price">' + priceHTML + "</div></article>";
@@ -629,7 +699,7 @@ main { padding-bottom: 120px; }
     $("#menu").innerHTML = cats.map(function (c) {
       var promo = "";
       return '<section class="cat" id="cat-' + c.id + '" data-cat="' + c.id + '">' + promo +
-        '<div class="banner">' + (c.image ? '<img class="bimg" src="' + esc(c.image) + '" alt="" loading="lazy" onerror="this.remove()">' : "") + "<h2>" + esc(c.name) + "</h2><small>" + c.items.length + (c.items.length === 1 ? " item" : " items") + (c.discountPct > 0 ? " · " + c.discountPct + "% off" + (untilText(c.discountUntil) ? " · " + untilText(c.discountUntil) : "") : "") + "</small></div>" +
+        '<div class="banner rv">' + (c.image ? '<img class="bimg" src="' + esc(c.image) + '" alt="" loading="lazy" onerror="this.remove()">' : "") + "<h2>" + esc(c.name) + "</h2><small>" + c.items.length + (c.items.length === 1 ? " item" : " items") + (c.discountPct > 0 ? " · " + c.discountPct + "% off" + (untilText(c.discountUntil) ? " · " + untilText(c.discountUntil) : "") : "") + "</small></div>" +
         '<div class="grid">' + c.items.map(function (it) { return cardHTML(c, it); }).join("") + "</div></section>";
     }).join("");
     $("#tabs").innerHTML = cats.map(function (c, i) {
@@ -637,6 +707,7 @@ main { padding-bottom: 120px; }
     }).join("");
     spy();
     applySearch();
+    reveal();
   }
   function renderSkeleton() {
     $("#menu").innerHTML = '<div class="grid">' + new Array(6 + 1).join('<div class="sk"></div>') + "</div>";
@@ -674,8 +745,8 @@ main { padding-bottom: 120px; }
   /* ---- cart ---- */
   function lines() { return Object.keys(cart).map(function (k) { return cart[k]; }); }
   function totals() { var n = 0, t = 0; lines().forEach(function (l) { n += l.qty; t += l.qty * l.price; }); return { n: n, t: t }; }
-  function saveCart() { store.set(key("avalon-cart-v1"), JSON.stringify(cart)); }
-  function loadCart() { try { cart = JSON.parse(store.get(key("avalon-cart-v1")) || "{}") || {}; } catch (e) { cart = {}; } }
+  function saveCart() { /* cart is not stored: every visit starts empty */ }
+  function loadCart() { cart = {}; store.set(key("avalon-cart-v1"), "{}"); }
   function reconcile() {
     Object.keys(cart).forEach(function (k) {
       var m = index[k];
@@ -683,12 +754,13 @@ main { padding-bottom: 120px; }
       cart[k].price = m.variant.price; cart[k].image = m.item.image; cart[k].cat = m.item._cat;
     });
   }
-  function addLine(item, v, qty) {
+  function addLine(item, v, qty, from) {
     var k = v.sheetName, l = cart[k];
     if (l) l.qty += qty;
     else cart[k] = { sheetName: k, name: item.name, size: v.size, price: v.price, qty: qty, image: item.image, cat: item._cat };
     saveCart(); renderCart();
     toast("Added: " + qty + "x " + k);
+    fly(from);
     var b = $("#cartbar"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
   }
   function waLink() {
@@ -720,17 +792,21 @@ main { padding-bottom: 120px; }
   }
 
   /* ---- panels ---- */
+  var panelHist = false;
   function openPanel(el) {
     lastFocus = document.activeElement;
     $("#scrim").classList.add("on"); el.classList.add("open"); document.body.style.overflow = "hidden";
     var c = $("[data-close]", el); if (c) c.focus({ preventScroll: true });
+    if (!panelHist) { try { history.pushState({ avp: 1 }, ""); panelHist = true; } catch (e) {} }
   }
-  function closeAll() {
+  function closeAll(fromPop) {
     $("#scrim").classList.remove("on");
     $$(".panel.open").forEach(function (p) { p.classList.remove("open"); });
     document.body.style.overflow = "";
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    if (panelHist) { panelHist = false; if (fromPop !== true) { try { history.back(); } catch (e) {} } }
   }
+  window.addEventListener("popstate", function () { if ($$(".panel.open").length) closeAll(true); });
   function openSheet(it) {
     S = { item: it, vi: 0, qty: 1 };
     var first = it.variants.findIndex(function (v) { return v.available; });
@@ -776,7 +852,7 @@ main { padding-bottom: 120px; }
     var card = t.closest(".card");
     if (card) {
       var it = itemById[card.dataset.key]; if (!it) return;
-      if (add && it.variants.length === 1 && it.variants[0].available) { addLine(it, it.variants[0], 1); return; }
+      if (add && it.variants.length === 1 && it.variants[0].available) { addLine(it, it.variants[0], 1, add); return; }
       if (it.from != null) openSheet(it);
       return;
     }
@@ -799,7 +875,7 @@ main { padding-bottom: 120px; }
   });
   $("#addBtn").addEventListener("click", function () {
     var v = S.item.variants[S.vi]; if (!v.available) return;
-    addLine(S.item, v, S.qty); closeAll();
+    addLine(S.item, v, S.qty, $("#addBtn")); closeAll();
   });
   $("#cartBtn").addEventListener("click", function () { openPanel($("#drawer")); });
   $("#cartbar").addEventListener("click", function () { openPanel($("#drawer")); });
@@ -811,7 +887,7 @@ main { padding-bottom: 120px; }
   $("#q").addEventListener("input", applySearch);
   $("#waBtn").addEventListener("click", function (e) {
     if (!CONFIG.whatsapp) { e.preventDefault(); toast("Ordering isn't available for this restaurant yet."); return; }
-    setTimeout(closeAll, 300);
+    setTimeout(function () { cart = {}; renderCart(); closeAll(); }, 700);
   });
 
   if ("ResizeObserver" in window) {
@@ -820,6 +896,9 @@ main { padding-bottom: 120px; }
 
   /* ---- boot ---- */
   function notFound() { document.body.classList.add("nf-on"); $("#nf").hidden = false; document.title = "Restaurant not found"; }
+  var REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var LITE = REDUCED || !!((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2)) || !("IntersectionObserver" in window);
+  if (LITE) document.documentElement.classList.add("lite");
   if (!rid) { notFound(); return; }
   loadCart();
   var MENU_KEY = key("avalon-menu-v1");

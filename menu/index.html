@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Avalon Ordering</title>
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#fbf6ee">
+<title>Menu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Manrope:wght@500;700;800&display=swap">
 <style>
 /* Layout concept: one long scroll. Full-bleed frosted bar on top (brand, search, cart, category tabs),
    white tiles for items, red/orange glow only on actions, frosted floating cart bar and sheets.
    Blur is used on 4 surfaces only (top bar, cart bar, item sheet, cart drawer) to stay light. */
 :root {
-  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
-  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --bg: #fcf7f4;
   --ink: #2b1b1a;
   --muted: #7a6764;
@@ -39,32 +41,6 @@
   --c-hot: #c4251c;
   --c-trend: #6a42c4;
   --c-fav: #a65f00;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #140e0f; --ink: #f7ece9; --muted: #b9a6a2; --line: rgba(255, 200, 190, .14);
-    --glass: rgba(30, 22, 23, .62); --glass-strong: rgba(36, 27, 28, .80); --glass-edge: rgba(255, 255, 255, .10);
-    --sheet: rgba(30, 22, 23, .94); --tile: #211819; --tile-edge: rgba(255, 210, 200, .10);
-    --accent: #ee4036; --glow: rgba(238, 64, 54, .45); --warm: #ff8f4a;
-    --wa: #148a43; --wa-glow: rgba(20, 138, 67, .45);
-    --ph-a: #3a2321; --ph-b: #5a2d27;
-    --blob1: rgba(255, 90, 70, .16); --blob2: rgba(255, 150, 70, .12); --blob3: rgba(255, 90, 130, .10);
-    --shadow-c: rgba(0, 0, 0, .6);
-    --c-pop: #5fd3dc; --c-hot: #ff8a80; --c-trend: #b9a0ff; --c-fav: #ffc266;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #140e0f; --ink: #f7ece9; --muted: #b9a6a2; --line: rgba(255, 200, 190, .14);
-  --glass: rgba(30, 22, 23, .62); --glass-strong: rgba(36, 27, 28, .80); --glass-edge: rgba(255, 255, 255, .10);
-  --sheet: rgba(30, 22, 23, .94); --tile: #211819; --tile-edge: rgba(255, 210, 200, .10);
-  --accent: #ee4036; --glow: rgba(238, 64, 54, .45); --warm: #ff8f4a;
-  --wa: #148a43; --wa-glow: rgba(20, 138, 67, .45);
-  --ph-a: #3a2321; --ph-b: #5a2d27;
-  --blob1: rgba(255, 90, 70, .16); --blob2: rgba(255, 150, 70, .12); --blob3: rgba(255, 90, 130, .10);
-  --shadow-c: rgba(0, 0, 0, .6);
-  --c-pop: #5fd3dc; --c-hot: #ff8a80; --c-trend: #b9a0ff; --c-fav: #ffc266;
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -331,6 +307,68 @@ main { padding-bottom: 120px; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
+
+/* ===== Avalon v2 design (light only) ===== */
+:root { color-scheme: light; --bg:#fbf6ee; --ink:#1f1b16; --muted:#6b6258; --tile:#fff; --tile-edge:#eadfcf; --line:#eadfcf; --ph-a:#f3e3d0; --ph-b:#ead2b8; --glass:rgba(251,246,238,.94); --glass-strong:#fff; --sheet:#fbf6ee; --accent:#b8391a; --glow:rgba(184,57,26,.35); }
+.logo { border-radius:50%; background:var(--accent); box-shadow:none; font-family:var(--font-display); font-weight:700; font-size:22px; overflow:hidden; }
+.logo img { width:100%; height:100%; object-fit:cover; display:block; }
+.brand b { font-size:19px; font-weight:700; }
+.cta, .big { background:var(--accent); box-shadow:none; }
+.big.wa { background:var(--wa); }
+.tab { min-height:44px; padding:0 20px; display:flex; align-items:center; font-weight:700; color:var(--ink); }
+.tab.on { color:#fff; box-shadow:none; }
+.bns { display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; padding:14px 0 2px; scrollbar-width:none; }
+.bns::-webkit-scrollbar { display:none; }
+.bn { position:relative; flex:0 0 min(86%,380px); aspect-ratio:2/1; border:0; padding:0; border-radius:20px; overflow:hidden; scroll-snap-align:start; background:var(--accent); color:#fff; text-align:left; cursor:pointer; }
+.bn img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.bn div { position:absolute; inset:auto 0 0; padding:34px 16px 14px; background:linear-gradient(to top,rgba(0,0,0,.68),transparent); }
+.bn b { display:block; font-family:var(--font-display); font-size:22px; line-height:1.1; }
+.bn span { font-size:13px; }
+.banner { min-height:90px; border-radius:18px; background:var(--ink); box-shadow:none; }
+.cat:nth-of-type(even) .banner { background:var(--accent); }
+.banner h2 { position:relative; z-index:1; text-transform:none; font-weight:700; font-size:28px; }
+.banner small { position:relative; z-index:1; }
+.banner .bimg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; }
+.grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 12px; }
+@media (min-width:760px) { .grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (min-width:1000px) { .grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+.card { display:block; padding:0; background:none; border:0; box-shadow:none; border-radius:0; }
+@media (hover:hover) { .card:hover { transform:none; box-shadow:none; } }
+.pic { width:100%; height:auto; aspect-ratio:1/1; }
+.pic .img, .pic .ph { border-radius:20px; }
+.add { right:8px; bottom:8px; width:44px; height:44px; border-color:#fff; box-shadow:none; }
+.name { margin:10px 4px 6px; font-family:var(--font-body); font-weight:800; font-size:15px; line-height:1.25; }
+.price { display:inline-flex; align-items:center; gap:5px; margin:0 4px; padding:5px 11px; border-radius:99px; background:#f1e8da; font-size:14px; font-weight:800; }
+.price .was { margin:0; }
+.dchip { position:absolute; left:10px; top:10px; padding:4px 9px; border-radius:99px; background:#f2b544; color:#1f1b16; font-size:11px; font-weight:800; }
+.dchip.s { position:static; }
+.sk { height:210px; }
+#sheet { overflow:hidden; }
+.close { background:var(--accent); color:#fff; border:0; }
+.shero { position:relative; padding:0; }
+.shero .img, .shero .ph { height:290px; border-radius:0; }
+.shero::after { content:""; position:absolute; inset:auto 0 0; height:110px; background:linear-gradient(to top,rgba(31,27,22,.82),transparent); pointer-events:none; }
+.hname { position:absolute; left:20px; right:20px; bottom:16px; z-index:1; margin:0; color:#fff; font-family:var(--font-display); font-weight:700; font-size:30px; line-height:1.05; }
+.prow { display:flex; align-items:center; flex-wrap:wrap; gap:10px; padding-top:16px; }
+.prow b { font-size:26px; font-weight:800; }
+.pdesc { margin:8px 0 0; color:var(--muted); font-size:14px; }
+.sizes { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.size { flex-direction:row; justify-content:flex-start; gap:10px; min-height:64px; padding:0 14px; text-align:left; border:1px solid #d9cbb8; background:#fff; color:var(--ink); }
+.size i { width:22px; height:22px; border-radius:50%; border:2px solid #b9ac9a; flex:none; }
+.size .st { display:flex; flex-direction:column; align-items:flex-start; }
+.size .st span { font-size:15px; font-weight:800; }
+.size .st b { font-size:14px; }
+.size[aria-checked="true"] { background:color-mix(in srgb,var(--accent) 10%,#fff); border:2px solid var(--accent); color:var(--ink); box-shadow:none; }
+.size[aria-checked="true"] i { border:0; background:var(--accent); box-shadow:inset 0 0 0 5px color-mix(in srgb,var(--accent) 10%,#fff); }
+.sfoot { display:flex; align-items:center; gap:12px; }
+.sfoot .big { flex:1; height:52px; border-radius:16px; }
+.sfoot .qty { border:0; border-radius:99px; background:#f1e8da; }
+.sfoot .qty button { width:44px; height:44px; border-radius:50%; background:#fff; }
+.sfoot .qty button.pl { background:var(--accent); }
+.nf { min-height:100dvh; display:grid; place-items:center; text-align:center; padding:24px; }
+.nf h1 { margin:0 0 8px; font-family:var(--font-display); font-size:28px; }
+.nf p { margin:0; color:var(--muted); }
+.nf-on .bar, .nf-on main, .nf-on footer, .nf-on .cartbar { display:none !important; }
 </style>
 </head>
 <body>
@@ -356,8 +394,8 @@ main { padding-bottom: 120px; }
   <div class="wrap">
     <div class="row">
       <div class="brand">
-        <div class="logo"><svg class="ic"><use href="#i-pizza"/></svg></div>
-        <div><b id="rname">Dope</b><span id="rtag">Order directly on WhatsApp</span></div>
+        <div class="logo" id="logo" aria-hidden="true"></div>
+        <div><b id="rname"></b><span id="rtag">Order directly on WhatsApp</span></div>
       </div>
       <button class="ibtn" id="searchBtn" aria-label="Search the menu" aria-expanded="false"><svg class="ic"><use href="#i-search"/></svg></button>
       <button class="ibtn" id="cartBtn" aria-label="Open your order"><svg class="ic"><use href="#i-bag"/></svg><span class="count" id="count">0</span></button>
@@ -368,18 +406,15 @@ main { padding-bottom: 120px; }
 </header>
 
 <main class="wrap">
-  <div class="hint">
-    <div class="dot"><svg class="ic"><use href="#i-wa"/></svg></div>
-    <p><b>Pick your items, then tap Place Order on WhatsApp.</b> Your order fills the chat and we carry on from there.</p>
-  </div>
+  <div class="bns" id="bns" hidden></div>
   <div id="menu"></div>
   <div class="empty" id="noRes" hidden>Nothing matches that search. Try another word.</div>
 </main>
 
 <footer class="wrap foot">
-  <div id="demoNote" hidden>Showing a sample menu. The live menu loads once this page is hosted.</div>
   <div>Powered by <b>Avalon.pk</b></div>
 </footer>
+<div class="nf" id="nf" hidden><div><h1>Restaurant not found</h1><p>Please check the link or scan the QR code again.</p></div></div>
 
 <button class="cartbar" id="cartbar" aria-label="View your order">
   <span class="bag"><svg class="ic"><use href="#i-bag"/></svg></span>
@@ -390,14 +425,15 @@ main { padding-bottom: 120px; }
 <div class="scrim" id="scrim"></div>
 
 <section class="panel" id="sheet" role="dialog" aria-modal="true" aria-label="Item details">
-  <div class="grab"></div>
   <button class="ibtn close" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>
-  <div class="pbody px">
+  <div class="pbody">
     <div class="shero" id="sHero"></div>
-    <div class="ptitle" id="sTitle"></div>
-    <div id="sDyn"></div>
+    <div class="px"><div id="sTitle"></div><div id="sDyn"></div></div>
   </div>
-  <div class="pfoot px"><button class="big" id="addBtn">Add to order</button></div>
+  <div class="pfoot px sfoot">
+    <div class="qty"><button data-q="-1" aria-label="Less"><svg class="ic"><use href="#i-minus"/></svg></button><output id="sQty">1</output><button class="pl" data-q="1" aria-label="More"><svg class="ic"><use href="#i-plus"/></svg></button></div>
+    <button class="big" id="addBtn">Add to order</button>
+  </div>
 </section>
 
 <aside class="panel" id="drawer" role="dialog" aria-modal="true" aria-label="Your order">
@@ -416,23 +452,21 @@ main { padding-bottom: 120px; }
 (function () {
   "use strict";
 
-  /* ---- Which restaurant? Taken from the link: menu-multi.html?r=avalon  (no ?r= means "dope") ---- */
-  var DEFAULT_RID = "dope";
+  /* ---- Which restaurant? Taken from the link: ?r=<rid>. No ?r= (or a bad one) means "not found". ---- */
   var rid = (function () {
     var r = "";
     try { r = String(new URLSearchParams(location.search).get("r") || "").trim().toLowerCase(); } catch (e) {}
-    return /^[a-z0-9-]{2,40}$/.test(r) ? r : DEFAULT_RID;
+    return /^[a-z0-9-]{2,40}$/.test(r) ? r : "";
   })();
-  var isDefault = rid === DEFAULT_RID;   // the default restaurant behaves exactly like the old single-client page
 
   /* ---- Settings (other restaurants get name, currency and WhatsApp number from the menu API) ---- */
   var CONFIG = {
-    restaurant: isDefault ? "Dope" : (rid.charAt(0).toUpperCase() + rid.slice(1)),   // placeholder until the API answers
+    restaurant: "",
     tagline: "Order directly on WhatsApp",
-    whatsapp: isDefault ? "923715223117" : "",            // restaurant WhatsApp number, country code first, digits only
+    whatsapp: "",
     menuUrl: "https://143.110.190.102.sslip.io/webhook/menu",
     currency: "Rs.",
-    greeting: ""                         // optional first line of the WhatsApp message
+    greeting: ""
   };
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -445,7 +479,7 @@ main { padding-bottom: 120px; }
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
   // Cart and menu cache are stored per restaurant so two restaurants never mix. The default keeps its old keys (existing carts survive).
-  var key = function (base) { return isDefault ? base : base + ":" + rid; };
+  var key = function (base) { return base + ":" + rid; };
 
   var cats = [];       // [{id,name,items:[{id,name,description,image,badge,variants:[{size,price,available,sheetName}],from}]}]
   var index = {};      // sheetName -> {item, variant}
@@ -453,43 +487,6 @@ main { padding-bottom: 120px; }
   var cart = {};       // sheetName -> line
   var S = { item: null, vi: 0, qty: 1 };
   var lastFocus = null, io = null, lockSpy = false, live = false;
-
-  /* ---- sample menu (used when the live webhook can't be reached) ---- */
-  function demo() {
-    var IMG = "https://res.cloudinary.com/ottbppx0/image/upload/w_600,q_auto,f_auto/v1792440082/WhatsApp_Image_2026-10-20_at_00.58.13_1_prx3q5.jpg";
-    var P4 = { Small: 599, Medium: 1199, Large: 1699, XL: 2599 };
-    var P3 = { Medium: 1299, Large: 1849, XL: 2799 };
-    var raw = [
-      ["Pizza", [
-        ["Stuffed Crust Pizza - Kebab or Cheese", { Medium: 1599, Large: 2249 }],
-        ["Dope's Favourite Pizza", P3, { image: IMG }], ["Square Pizza", P3, { image: IMG }],
-        ["Must Have Pizza", P3, { image: IMG }], ["Behari Kebab Pizza", P3, { image: IMG }],
-        ["Tikka Pizza", P4, { image: IMG, badge: "Popular" }], ["Fajita Pizza", P4, { image: IMG }],
-        ["Cheese Lover Pizza", P4, { image: IMG, badge: "Most Favourite" }],
-        ["Euro Chicken Pizza", P4, { image: IMG, badge: "Hot Selling" }],
-        ["Veggie Lover Pizza", P4, { image: IMG, badge: "Trending" }],
-        ["Chicken Sausage Pizza", P4], ["Chicken Pepperoni Pizza", P4]]],
-      ["Burger", [["Lil Champ Burger", 349], ["Zareeta Burger", 399], ["Classico Zinger Burger", 499], ["Hypebeast Burger", 649], ["Lava Monster Burger", 649], ["Supreme Zinger Burger", 749]]],
-      ["Appetizers", [["Cheese Sticks", 599], ["Behari Roll", 680], ["Nuggets (5 pcs)", 320], ["Kebab Bites", 649], ["Crispy Wings (6 pcs)", 549], ["Crispy Wings (12 pcs)", 950], ["Saucy Wings (6 pcs)", 599], ["Saucy Wings (12 pcs)", 1099]]],
-      ["Wraps", [["Gangsta Wrap", 799], ["Monsta Wrap", 799]]],
-      ["Pasta", [["Crunchy Pasta", 899], ["Alfredo Pasta", 950]]],
-      ["Fries", [["Regular Fries", 200], ["Large Fries", 299], ["Tender Fries", 620], ["Pizza Fries", 899]]],
-      ["Drinks", [["Drink 345ml", 110], ["Drink 1.5L", 200]]],
-      ["Sandwiches", [["Euro Sandwich", 849], ["Maxican Sandwich", 849], ["Pizza Stacker Sandwich", 849]]]
-    ];
-    return raw.map(function (c) {
-      return {
-        name: c[0],
-        items: c[1].map(function (r) {
-          var ex = r[2] || {};
-          var variants = typeof r[1] === "number"
-            ? [{ size: null, price: r[1], available: true }]
-            : Object.keys(r[1]).map(function (k) { return { size: k, price: r[1][k], available: true }; });
-          return { name: r[0], image: ex.image || "", badge: ex.badge || "", description: "", variants: variants };
-        })
-      };
-    });
-  }
 
   /* ---- data ---- */
   function normalize(list) {
@@ -526,20 +523,38 @@ main { padding-bottom: 120px; }
   }
   function checkMenu(j) {
     if (!j || !j.categories || !j.categories.length) throw new Error("empty");
-    // A non-default restaurant must get its OWN menu back. An old API that ignores ?r= would return the default menu, so refuse it.
-    if (!isDefault && !(j.restaurant && j.restaurant.id === rid)) throw new Error("wrong restaurant");
+    if (!(j.restaurant && j.restaurant.id === rid)) throw new Error("wrong restaurant");
     return j;
   }
-  // Name, currency and WhatsApp number come from the API for non-default restaurants only (the default page stays exactly as it was).
   function applyRestaurant(j) {
     var r = j && j.restaurant;
-    if (isDefault || !r) return;
-    if (r.name) CONFIG.restaurant = String(r.name);
-    if (r.currency) CONFIG.currency = r.currency === "PKR" ? "Rs." : String(r.currency);
+    if (!r) return;
+    CONFIG.restaurant = String(r.name || rid);
+    CONFIG.currency = !r.currency || r.currency === "PKR" ? "Rs." : String(r.currency);
     var digits = String(r.phone || "").replace(/\D/g, "");
-    CONFIG.whatsapp = digits.length >= 10 && digits.length <= 15 ? digits : "";   // e.g. "PENDING" means: not connected yet
+    CONFIG.whatsapp = digits.length >= 10 && digits.length <= 15 ? digits : "";
+    if (/^#[0-9a-fA-F]{6}$/.test(r.brandColor || "")) {
+      var rs = document.documentElement.style; rs.setProperty("--accent", r.brandColor); rs.setProperty("--glow", r.brandColor + "55");
+    }
     $("#rname").textContent = CONFIG.restaurant;
-    document.title = CONFIG.restaurant + " | Avalon Ordering";
+    $("#rtag").textContent = r.tagline || CONFIG.tagline;
+    setLogo(r.logo);
+    document.title = CONFIG.restaurant + " | Menu";
+    renderBanners(j.banners);
+  }
+  function setLogo(u) {
+    var l = $("#logo");
+    l.textContent = (CONFIG.restaurant || "?").charAt(0).toUpperCase();
+    if (u) { var im = new Image(); im.alt = ""; im.onload = function () { l.textContent = ""; l.appendChild(im); }; im.src = u; }
+  }
+  function renderBanners(list) {
+    var el = $("#bns"); list = list || [];
+    el.hidden = !list.length;
+    el.innerHTML = list.map(function (b) {
+      var sub = b.subtitle || untilText(b.until), has = b.title || sub;
+      return '<button class="bn"' + (b.category ? ' data-tab="' + esc(slug(b.category)) + '"' : "") + '><img src="' + esc(b.image) + '" alt="" loading="lazy" onerror="this.remove()">' +
+        (has ? "<div>" + (b.title ? "<b>" + esc(b.title) + "</b>" : "") + (sub ? "<span>" + esc(sub) + "</span>" : "") + "</div>" : "") + "</button>";
+    }).join("");
   }
   function fetchMenu() {
     var ctl = typeof AbortController === "function" ? new AbortController() : null;
@@ -583,20 +598,15 @@ main { padding-bottom: 120px; }
 
   /* ---- menu render ---- */
   function cardHTML(c, it) {
-    var sub = subText(it);
-    var multi = it.variants.length > 1;
-    var off = it.from == null;
-    var cheap = null;
+    var multi = it.variants.length > 1, off = it.from == null, cheap = null;
     it.variants.forEach(function (v) { if (v.available && (!cheap || v.price < cheap.price)) cheap = v; });
     var disc = cheap && cheap.discountPct > 0 && cheap.originalPrice > cheap.price;
-    var priceHTML = off ? "Sold out" : (multi ? "<small>From</small>" : "") + (disc ? '<span class="was">' + fmt(cheap.originalPrice) + "</span>" : "") + fmt(it.from);
+    var chip = disc ? cheap.discountPct + "% off" : it.badge;
+    var priceHTML = off ? "Sold out" : (multi ? "<small>From</small>" : "") + fmt(it.from) + (disc ? '<span class="was">' + fmt(cheap.originalPrice) + "</span>" : "");
     return '<article class="card' + (off ? " off" : "") + '" data-key="' + esc(c.id + "/" + it.id) + '" data-name="' + esc(it.name.toLowerCase()) + '" tabindex="0" role="button" aria-label="' + esc(it.name) + '">' +
-      '<div class="info">' + badgeHTML(it.badge) +
-      '<h3 class="name">' + esc(it.name) + "</h3>" +
-      (sub ? '<p class="sub">' + esc(sub) + "</p>" : "") +
-      '<div class="price">' + priceHTML + "</div></div>" +
-      '<div class="pic">' + picHTML(it.image, c.name, it.name) +
-      '<button class="add" data-add aria-label="' + (multi ? "Choose options for " : "Add ") + esc(it.name) + '"' + (off ? " disabled" : "") + '><svg class="ic"><use href="#i-plus"/></svg></button></div></article>';
+      '<div class="pic">' + picHTML(it.image, c.name, it.name) + (chip && !off ? '<span class="dchip">' + esc(chip) + "</span>" : "") +
+      '<button class="add" data-add aria-label="' + (multi ? "Choose options for " : "Add ") + esc(it.name) + '"' + (off ? " disabled" : "") + '><svg class="ic"><use href="#i-plus"/></svg></button></div>' +
+      '<h3 class="name">' + esc(it.name) + '</h3><div class="price">' + priceHTML + "</div></article>";
   }
   function untilText(u) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(u || "")) return "";
@@ -617,9 +627,9 @@ main { padding-bottom: 120px; }
   }
   function renderMenu() {
     $("#menu").innerHTML = cats.map(function (c) {
-      var promo = dealHTML(c);
+      var promo = "";
       return '<section class="cat" id="cat-' + c.id + '" data-cat="' + c.id + '">' + promo +
-        '<div class="banner"><h2>' + esc(c.name) + "</h2><small>" + c.items.length + (c.items.length === 1 ? " item" : " items") + '</small><svg class="ic"><use href="#' + iconFor(c.name) + '"/></svg></div>' +
+        '<div class="banner">' + (c.image ? '<img class="bimg" src="' + esc(c.image) + '" alt="" loading="lazy" onerror="this.remove()">' : "") + "<h2>" + esc(c.name) + "</h2><small>" + c.items.length + (c.items.length === 1 ? " item" : " items") + (c.discountPct > 0 ? " · " + c.discountPct + "% off" + (untilText(c.discountUntil) ? " · " + untilText(c.discountUntil) : "") : "") + "</small></div>" +
         '<div class="grid">' + c.items.map(function (it) { return cardHTML(c, it); }).join("") + "</div></section>";
     }).join("");
     $("#tabs").innerHTML = cats.map(function (c, i) {
@@ -725,24 +735,26 @@ main { padding-bottom: 120px; }
     S = { item: it, vi: 0, qty: 1 };
     var first = it.variants.findIndex(function (v) { return v.available; });
     S.vi = first < 0 ? 0 : first;
-    $("#sHero").innerHTML = picHTML(it.image, it._cat, it.name);
-    var sub = subText(it);
-    $("#sTitle").innerHTML = badgeHTML(it.badge) + "<h3>" + esc(it.name) + "</h3>" + (it.description ? "<p>" + esc(it.description) + "</p>" : "");
+    $("#sHero").innerHTML = picHTML(it.image, it._cat, it.name) + '<h3 class="hname">' + esc(it.name) + "</h3>";
+    $("#sTitle").innerHTML = "";
     drawSheet(); openPanel($("#sheet"));
   }
   function drawSheet() {
     var it = S.item, v = it.variants[S.vi], multi = it.variants.length > 1;
-    var html = "";
+    var disc = v.discountPct > 0 && v.originalPrice > v.price;
+    var html = '<div class="prow"><b>' + fmt(v.price) + "</b>" + (disc ? '<span class="was">' + fmt(v.originalPrice) + '</span><span class="dchip s">' + v.discountPct + "% off</span>" : "") + "</div>" +
+      (it.description ? '<p class="pdesc">' + esc(it.description) + "</p>" : "");
     if (multi) {
       html += '<div class="lbl">Select size</div><div class="sizes" role="radiogroup" aria-label="Size">' +
         it.variants.map(function (x, i) {
-          return '<button class="size" role="radio" aria-checked="' + (i === S.vi) + '" data-vi="' + i + '"' + (x.available ? "" : " disabled") + "><span>" + esc(x.size || "Regular") + "</span><b>" + (x.discountPct > 0 && x.originalPrice > x.price ? '<span class="was">' + fmt(x.originalPrice) + "</span>" : "") + fmt(x.price) + "</b></button>";
+          return '<button class="size" role="radio" aria-checked="' + (i === S.vi) + '" data-vi="' + i + '"' + (x.available ? "" : " disabled") + '><i></i><span class="st"><span>' + esc(x.size || "Regular") + "</span><b>" + fmt(x.price) + "</b></span></button>";
         }).join("") + "</div>";
     }
-    html += '<div class="lbl">Quantity</div><div class="qty"><button data-q="-1" aria-label="Less"><svg class="ic"><use href="#i-minus"/></svg></button><output>' + S.qty + '</output><button class="pl" data-q="1" aria-label="More"><svg class="ic"><use href="#i-plus"/></svg></button></div><div style="height:18px"></div>';
+    html += '<div style="height:14px"></div>';
     $("#sDyn").innerHTML = html;
+    $("#sQty").textContent = S.qty;
     var b = $("#addBtn"); b.disabled = !v.available;
-    b.textContent = v.available ? "Add to order · " + fmt(v.price * S.qty) : "Sold out";
+    b.textContent = v.available ? fmt(v.price * S.qty) + "  |  Add to order" : "Sold out";
   }
   var toastT;
   function toast(msg) {
@@ -807,9 +819,8 @@ main { padding-bottom: 120px; }
   }
 
   /* ---- boot ---- */
-  $("#rname").textContent = CONFIG.restaurant;
-  $("#rtag").textContent = CONFIG.tagline;
-  document.title = CONFIG.restaurant + " | Avalon Ordering";
+  function notFound() { document.body.classList.add("nf-on"); $("#nf").hidden = false; document.title = "Restaurant not found"; }
+  if (!rid) { notFound(); return; }
   loadCart();
   var MENU_KEY = key("avalon-menu-v1");
   var cachedText = store.get(MENU_KEY), shown = "";
@@ -817,22 +828,15 @@ main { padding-bottom: 120px; }
   if (cachedText) {
     try {
       var cj = checkMenu(JSON.parse(cachedText));
-      applyRestaurant(cj); show(normalize(cj.categories)); shown = cachedText; live = true;
+      applyRestaurant(cj); show(normalize(cj.categories)); shown = cachedText;
     } catch (e) { renderSkeleton(); }
   } else renderSkeleton();
   renderCart();
   fetchMenu().then(function (r) {
-    store.set(MENU_KEY, r.text); live = true; $("#demoNote").hidden = true;
+    store.set(MENU_KEY, r.text);
     applyRestaurant(r.json);
     if (r.text !== shown) show(r.cats);
-  }).catch(function () {
-    if (shown) return;
-    if (isDefault) { show(normalize(demo())); $("#demoNote").hidden = false; }   // sample menu is the default restaurant's only
-    else {
-      $("#tabs").innerHTML = "";
-      $("#menu").innerHTML = '<div class="empty">This menu could not be loaded. Please check the link or try again in a moment.</div>';
-    }
-  });
+  }).catch(function () { if (!shown) notFound(); });
 })();
 </script>
 </body>

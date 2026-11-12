@@ -492,7 +492,7 @@ main { padding-bottom: 120px; }
   function normalize(list) {
     var out = (list || []).map(function (c) {
       return {
-        id: slug(c.name), name: c.name, discountPct: Number(c.discountPct) || 0, discountUntil: c.discountUntil || "",
+        id: slug(c.name), name: c.name, discountPct: Number(c.discountPct) || 0, discountUntil: c.discountUntil || "", image: c.image || "",
         items: (c.items || []).map(function (it) {
           var variants = (it.variants || []).map(function (v) {
             return {
